@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineDashboardCustomize } from "react-icons/md";
-import { IoSettingsOutline } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
+import { MdOutlineManageSearch, MdUploadFile } from "react-icons/md";
+import { DropdownMenu } from "../DropdownMenu";
+import { TbTopologyComplex } from "react-icons/tb";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -19,31 +19,34 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="p-4 flex flex-row justify-between">
           <ul className="flex flex-row text-white gap-2">
             <li
-              className={`p-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 ${
+              className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
                 isActive("/home") && "bg-green-900"
               }`}
               onClick={() => navigate("/home")}
             >
-              <MdOutlineDashboardCustomize size={20} />
+              <MdUploadFile size={20} />
+              Envio de Dados
             </li>
             <li
-              className={`p-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 ${
+              className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
                 isActive("/settings") && "bg-green-900"
               }`}
               onClick={() => navigate("/settings")}
             >
-              <IoSettingsOutline size={20} />
+              <MdOutlineManageSearch size={20} />
+              Busca por Informações
             </li>
             <li
-              className={`p-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 ${
+              className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
                 isActive("/profile") && "bg-green-900"
               }`}
               onClick={() => navigate("/profile")}
             >
-              <CgProfile size={20} />
+              <TbTopologyComplex size={20} />
+              Ações Complexas
             </li>
           </ul>
-          <div className="flex flex-row gap-4 items-center">Menu do Perfil</div>
+          <div className="flex flex-row gap-4 items-center"><DropdownMenu /></div>
         </div>
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>

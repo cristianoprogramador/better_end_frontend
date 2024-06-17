@@ -4,7 +4,15 @@ import loginImg from "@/assets/images/login.png";
 
 export function Login() {
   return (
-    <main className="flex min-h-screen w-full justify-between items-center bg-theme-bg">
+    <main
+      className="flex min-h-screen w-full justify-between items-center"
+      style={{
+        backgroundImage: `url(${loginImg})`,
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div className="flex flex-row h-full gap-4 items-center justify-center bg-theme-bg w-full">
         <div className="flex lg:w-1/2 justify-center items-center">
           <div className="p-10 rounded-md sm:border bg-white">
@@ -15,10 +23,6 @@ export function Login() {
             <div>Nome</div>
             <div>Senha</div>
           </div>
-        </div>
-
-        <div className="hidden lg:flex animate-fadeIn">
-          <img src={loginImg} alt="" />
         </div>
       </div>
     </main>
