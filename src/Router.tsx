@@ -7,9 +7,11 @@ import {
   Outlet,
 } from "react-router-dom";
 import { Login } from "./pages/Login";
-import { Home } from "./pages/Home";
 import { MainLayout } from "./components/MainLayout";
-import { Search } from "./pages/Search";
+import { Get } from "./pages/Get";
+import { Post } from "./pages/Post";
+import { Update } from "./pages/Update";
+import { Delete } from "./pages/Delete";
 
 function RouteWithLayout() {
   return (
@@ -26,9 +28,11 @@ export function ProjectRoutes() {
         <Routes>
           <Route element={<RouteWithLayout />}>
             <Route path="/login" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/get" element={<Get />} />
+            <Route path="/update" element={<Update />} />
+            <Route path="/delete" element={<Delete />} />
+            <Route path="*" element={<Navigate to="/post" replace />} />
           </Route>
         </Routes>
       </Router>

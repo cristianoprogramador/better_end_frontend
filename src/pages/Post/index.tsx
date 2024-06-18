@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa";
 
-export function Home() {
+export function Post() {
   const [isUploading, setIsUploading] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);

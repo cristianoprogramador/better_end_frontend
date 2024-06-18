@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
 
 interface Filter {
   type: string;
   value: string;
+  operator?: string;
 }
 
 const filterOptions = [
@@ -13,7 +15,7 @@ const filterOptions = [
   "Price",
 ];
 
-export function Search() {
+export function Get() {
   const [isUploading, setIsUploading] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -101,15 +103,25 @@ export function Search() {
           Comparação de Desempenho: SQL vs NoSQL
         </div>
         <div className="mt-5">
+          <h2 className="font-bold text-2xl text-gray-700 text-center">
+            Get
+          </h2>
           {filters.map((filter, index) => (
-            <div key={index} className="mb-3 flex items-center">
-
+            <div key={index} className="mb-3 flex items-center mt-5">
+              {index > 0 && (
+                <button
+                  onClick={() => removeFilter(index)}
+                  className="mr-2 p-1 rounded hover:opacity-60"
+                >
+                  <IoRemoveCircleOutline size={30} color="red" />
+                </button>
+              )}
               <select
                 value={filter.type || ""}
                 onChange={(e) =>
                   handleFilterChange(index, "type", e.target.value)
                 }
-                className="p-2 rounded"
+                className={`p-2 rounded ${index === 0 ? "ml-[46px]" : ""}`}
               >
                 <option value="">Selecione o Tipo de Filtro</option>
                 {getAvailableFilterOptions(index).map((option) => (
@@ -118,6 +130,20 @@ export function Search() {
                   </option>
                 ))}
               </select>
+              {filter.type === "Price" && (
+                <select
+                  value={filter.operator || ""}
+                  onChange={(e) =>
+                    handleFilterChange(index, "operator", e.target.value)
+                  }
+                  className="ml-2 p-2 rounded"
+                >
+                  <option value="">Operador</option>
+                  <option value=">">Maior que</option>
+                  <option value="<">Menor que</option>
+                  <option value="=">Igual a</option>
+                </select>
+              )}
               <input
                 type="text"
                 value={filter.value || ""}
@@ -126,32 +152,29 @@ export function Search() {
                 }
                 className="ml-2 p-2 rounded"
               />
-               {index > 0 && (
-                <button
-                  onClick={() => removeFilter(index)}
-                  className="ml-2 bg-red-500 text-white p-2 rounded"
-                >
-                  -
-                </button>
-              )}
             </div>
           ))}
-          <button
-            onClick={addFilter}
-            className="mt-2 bg-green-500 text-white py-1 px-4 rounded"
-          >
-            +
-          </button>
+          <div className="mt-2 p-1 rounded w-full flex justify-center items-center">
+            <IoAddCircleOutline
+              size={30}
+              color="green"
+              onClick={addFilter}
+              className="hover:opacity-60 cursor-pointer"
+            />
+          </div>
         </div>
-        <button
-          onClick={handleSearch}
-          disabled={isUploading}
-          className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
-        >
-          {isUploading ? "Carregando..." : "Buscar"}
-        </button>
-        <div className="mt-5">
-          <div>Tempo decorrido: {formatTime(elapsedTime)}</div>
+
+        <div className="flex flex-row gap-5 items-center justify-center">
+          <button
+            onClick={handleSearch}
+            disabled={isUploading}
+            className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
+          >
+            {isUploading ? "Carregando..." : "Buscar"}
+          </button>
+          <div className="mt-5">
+            <div>Tempo decorrido: {formatTime(elapsedTime)}</div>
+          </div>
         </div>
         <div className="mt-5">
           <h2 className="font-bold text-xl text-center">Resultados</h2>
