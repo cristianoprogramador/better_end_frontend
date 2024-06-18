@@ -29,9 +29,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
-                isActive("/settings") && "bg-green-900"
+                isActive("/search") && "bg-green-900"
               }`}
-              onClick={() => navigate("/settings")}
+              onClick={() => navigate("/search")}
             >
               <MdOutlineManageSearch size={20} />
               Busca por Informações

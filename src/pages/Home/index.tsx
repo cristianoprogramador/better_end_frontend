@@ -54,7 +54,19 @@ export function Home() {
         <div className="font-bold text-3xl text-gray-700 text-center">
           Comparação de Desempenho: SQL vs NoSQL
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950 cursor-pointer hover:bg-gray-300">
+            <div className="flex flex-col justify-center items-center">
+              <div>Baixe o Arquivo</div>
+              <div className="text-xs text-justify w-3/4">
+                (O arquivo é fixo para evitar manipulação e erros, mas clique aqui para
+                baixar e ver o conteudo)
+              </div>
+            </div>
+            <div>
+              <FaDownload size={25} />
+            </div>
+          </div>
           <div
             className="p-2 mt-5 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 text-white"
             onClick={startTimer}
@@ -65,20 +77,8 @@ export function Home() {
         <div className="flex flex-row justify-center gap-10 w-full mt-6">
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700">SQL</div>
-            <div className="flex flex-row gap-4  mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
-              <div className="flex flex-col justify-center items-center">
-                <div>Baixe o Arquivo</div>
-                <div className="text-xs text-justify w-3/4">
-                  (O arquivo é fixo para evitar manipulação, mas clique para
-                  baixa-lo e ver o conteudo)
-                </div>
-              </div>
-              <div>
-                <FaDownload size={25} />
-              </div>
-            </div>
 
-            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4">
+            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"
                 style={{ width: `${(elapsedTime / 5000) * 100}%` }}
@@ -89,20 +89,8 @@ export function Home() {
 
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700">NoSQL</div>
-            <div className="flex flex-row gap-4  mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
-              <div className="flex flex-col justify-center items-center">
-                <div>Baixe o Arquivo</div>
-                <div className="text-xs text-justify w-3/4">
-                  (O arquivo é fixo para evitar manipulação, mas clique para
-                  baixa-lo e ver o conteudo)
-                </div>
-              </div>
-              <div>
-                <FaDownload size={25} />
-              </div>
-            </div>
 
-            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4">
+            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"
                 style={{ width: `${(elapsedTime / 5000) * 100}%` }}
@@ -111,7 +99,7 @@ export function Home() {
             <div className="text-lg font-mono">{formatTime(elapsedTime)}</div>
           </div>
         </div>
-        <div className="flex flex-row gap-4  mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
+        <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
           <div className="flex flex-col justify-center items-center">
             <div className="text-base">
               Acima iremos testar a velocidade para o backend pegar o arquivo e
@@ -123,6 +111,7 @@ export function Home() {
               de sucesso iremos parar o cronometro, logo em seguida iremos fazer
               o mesmo para o banco de dados NoSQL
             </div>
+            <div className="text-sm">(Os arquivos são os mesmos)</div>
           </div>
         </div>
       </div>
