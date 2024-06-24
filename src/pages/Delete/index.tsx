@@ -171,7 +171,7 @@ export function Delete() {
             disabled={isUploading}
             className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
           >
-            {isUploading ? "Carregando..." : "Buscar"}
+            {isUploading ? "Carregando..." : "Deletar"}
           </button>
           <div className="mt-5">
             <div>Tempo decorrido: {formatTime(elapsedTime)}</div>
