@@ -70,10 +70,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               <PiPathFill size={20} className="hidden lg:flex" />
               Qual devo usar?
             </li>
-          </ul>
-          <div className="flex flex-row gap-4 items-center absolute right-10 flex-wrap">
             <DropdownMenu />
-          </div>
+          </ul>
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-4">
           <div className="flex flex-row justify-center items-center gap-10">
@@ -83,7 +81,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
                   <div
                     className="bg-green-600 h-2.5 rounded-full"
-                    style={{ width: `${(mockDatabaseSize.sqlSize / 5000) * 100}%` }}
+                    style={{
+                      width: `${(mockDatabaseSize.sqlSize / 5000) * 100}%`,
+                    }}
                   ></div>
                 </div>
               </div>
@@ -94,7 +94,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
                   <div
                     className="bg-green-600 h-2.5 rounded-full"
-                    style={{ width: `${(mockDatabaseSize.nosqlSize / 5000) * 100}%` }}
+                    style={{
+                      width: `${(mockDatabaseSize.nosqlSize / 5000) * 100}%`,
+                    }}
                   ></div>
                 </div>
               </div>

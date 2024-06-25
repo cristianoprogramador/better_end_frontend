@@ -6,7 +6,6 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import { Login } from "./pages/Login";
 import { MainLayout } from "./components/MainLayout";
 import { Get } from "./pages/Get";
 import { Post } from "./pages/Post";
@@ -28,7 +27,6 @@ export function ProjectRoutes() {
       <Router>
         <Routes>
           <Route element={<RouteWithLayout />}>
-            <Route path="/login" element={<Login />} />
             <Route path="/post" element={<Post />} />
             <Route path="/get" element={<Get />} />
             <Route path="/update" element={<Update />} />

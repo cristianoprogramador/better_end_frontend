@@ -94,7 +94,7 @@ export function WhichOne() {
               onClick={showNextQuestion}
               className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
             >
-              + Adicionar outra pergunta
+              + Testar outra pergunta
             </button>
           </div>
         )}
