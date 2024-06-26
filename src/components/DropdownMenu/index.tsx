@@ -12,7 +12,7 @@ interface DropdownMenuProps {}
 export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { signInByGoogle, user } = useContext(AuthContext);
+  const { signInByGoogle, user, isAuthenticated } = useContext(AuthContext);
 
   const handleLogout = () => {
     const confirmDelete = window.confirm("tem certeza?");
@@ -50,13 +50,17 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
     };
   }, [dropdownRef]);
 
-  const isAuthenticated = false;
+  const profileImageUrl =
+  user?.profileImageUrl &&
+  user.profileImageUrl.trim() !== ""
+    ? user.profileImageUrl
+    : profileImg;
 
   return (
     <div className="relative rounded-lg ml-4 text-black" ref={dropdownRef}>
       {isAuthenticated ? (
         <img
-          src={profileImg}
+          src={profileImageUrl}
           alt="Profile"
           className="w-8 h-8 rounded-full object-cover cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
@@ -75,12 +79,12 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
       )}
 
       {isOpen && isAuthenticated && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10">
+        <div className="absolute right-0 mt-2 min-w-48 bg-white border rounded shadow-lg z-10">
           <div className="bg-gray-300 h-14 relative">
             <div className="flex items-center justify-center">
               <div className="w-14 h-14 rounded-full overflow-hidden relative mt-3">
                 <img
-                  src={user?.profileImageUrl}
+                  src={profileImageUrl}
                   alt="ProfileBig"
                   className="object-cover w-full h-full"
                 />

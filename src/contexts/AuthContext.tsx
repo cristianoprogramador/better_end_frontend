@@ -97,9 +97,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (token && userDataString) {
       try {
         const response = await verifyToken();
-        // console.log(response);
         if (response) {
-          // console.log(response);
           setUser(response);
         }
       } catch (error) {
