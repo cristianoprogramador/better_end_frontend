@@ -122,7 +122,7 @@ export function Update() {
     <div className="flex flex-col justify-center items-center p-10">
       <div className="max-w-[800px]">
         <div className="font-bold text-3xl text-gray-700 text-center">
-          Comparação de Desempenho: SQL vs NoSQL
+          Performance Comparison: SQL vs NoSQL
         </div>
         <div className="mt-5">
           <h2 className="font-bold text-2xl text-gray-700 text-center">
@@ -131,7 +131,7 @@ export function Update() {
 
           <div>
             <h3 className="font-bold text-xl text-gray-700 mt-10">
-              Campos para Atualizar
+              Fields to Update
             </h3>
             {filters.map((filter, index) => (
               <div key={index} className="mb-3 flex items-center">
@@ -150,7 +150,7 @@ export function Update() {
                   }
                   className={`p-2 rounded ${index === 0 ? "ml-[46px]" : ""}`}
                 >
-                  <option value="">Selecione o Tipo de Filtro</option>
+                  <option value="">Select Filter Type</option>
                   {filterOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -165,7 +165,7 @@ export function Update() {
                     }
                     className="ml-2 p-2 rounded"
                   >
-                    <option value="">Operador</option>
+                    <option value="">Operator</option>
                     {operatorOptions.map((option) => (
                       <option key={option} value={option}>
                         {option}
@@ -194,7 +194,7 @@ export function Update() {
           </div>
           <div className="mt-5">
             <h3 className="font-bold text-xl text-gray-700">
-              Campos para Atualizar
+              Fields to Update
             </h3>
             {updateFields.map((field, index) => (
               <div key={index} className="mb-3 flex items-center">
@@ -213,7 +213,7 @@ export function Update() {
                   }
                   className={`p-2 rounded ${index === 0 ? "ml-[46px]" : ""}`}
                 >
-                  <option value="">Selecione o Campo</option>
+                  <option value="">Select Field</option>
                   {filterOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -247,24 +247,24 @@ export function Update() {
               disabled={isUploading}
               className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
             >
-              {isUploading ? "Atualizando..." : "Atualizar"}
+              {isUploading ? "Updating..." : "Update"}
             </button>
             <div className="mt-5">
-              <div>Tempo decorrido: {formatTime(elapsedTime)}</div>
+              <div>Elapsed time: {formatTime(elapsedTime)}</div>
             </div>
           </div>
         </div>
         <div className="mt-5">
-          <h2 className="font-bold text-xl text-center">Resultados</h2>
+          <h2 className="font-bold text-xl text-center">Results</h2>
           <div className="flex flex-row w-full justify-between gap-4 mt-3">
             <div className="mt-3">
               <h3 className="font-semibold">SQL</h3>
-              <p>Tempo de resposta: {results?.sql?.responseTime} ms</p>
+              <p>Response time: {results?.sql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.sql?.data, null, 2)}</pre>
             </div>
             <div className="mt-3">
               <h3 className="font-semibold">NoSQL</h3>
-              <p>Tempo de resposta: {results?.noSql?.responseTime} ms</p>
+              <p>Response time: {results?.noSql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.noSql?.data, null, 2)}</pre>
             </div>
           </div>

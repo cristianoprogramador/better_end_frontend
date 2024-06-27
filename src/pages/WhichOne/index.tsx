@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { questions } from "@/utils/questions-pt";
+import { questions } from "@/utils/questions-en";
 
 interface Option {
   answer: string;
@@ -72,10 +72,33 @@ export function WhichOne() {
   const noSqlBgClass = noSqlCount > sqlCount ? "bg-green-200" : "";
 
   return (
-    <div className="flex flex-col justify-center items-center p-10 relative">
+    <div className="flex flex-col justify-center items-center p-10">
       <div className="max-w-[650px] mb-20">
-        <div className="font-bold text-3xl text-gray-700 text-center mb-8">
-          Comparação de Desempenho: SQL vs NoSQL
+        <div className="font-bold text-3xl text-gray-700 text-center">
+          Which one should I use: SQL vs NoSQL
+        </div>
+        <div className="flex w-full justify-center items-center">
+          <div className="my-1 border w-72 py-2">
+            <div className="text-lg text-center font-semibold">Scoreboard</div>
+            <div className="flex flex-row justify-center items-center gap-10 mt-3">
+              <div
+                className={`flex flex-col justify-center items-center gap-1 border border-black border-dashed text-center w-20 ${sqlBgClass}`}
+              >
+                <div className="text-lg font-bold border-b border-black border-dashed p-1 flex w-full text-center items-center justify-center">
+                  SQL:
+                </div>
+                <div className="text-base font-bold p-1">{sqlCount}</div>
+              </div>
+              <div
+                className={`flex flex-col justify-center items-center gap-1 border border-black border-dashed text-center w-20 ${noSqlBgClass}`}
+              >
+                <div className="text-lg font-bold border-b border-black border-dashed p-1 flex w-full text-center items-center justify-center">
+                  NoSQL:
+                </div>
+                <div className="text-base font-bold p-1">{noSqlCount}</div>
+              </div>
+            </div>
+          </div>
         </div>
         {shuffledQuestions.map((question) =>
           visibleQuestions.includes(question.id) ? (
@@ -105,7 +128,7 @@ export function WhichOne() {
               </div>
               {responses[question.id] && (
                 <div className="mt-2 text-blue-600 font-semibold">
-                  Recomendação: {responses[question.id]}
+                  Recommendation : {responses[question.id]}
                 </div>
               )}
             </div>
@@ -117,31 +140,10 @@ export function WhichOne() {
               onClick={showNextQuestion}
               className="mt-4 p-2 bg-green-500 text-white rounded-lg hover:bg-green-700"
             >
-              + Testar outra pergunta
+              + Test another question
             </button>
           </div>
         )}
-        <div className="my-8 border w-72 py-2 absolute bottom-0 right-0 z-10">
-          <div className="text-lg text-center font-semibold">Placar</div>
-          <div className="flex flex-row justify-center items-center gap-10 mt-3">
-            <div
-              className={`flex flex-col justify-center items-center gap-1 border border-black border-dashed text-center w-20 ${sqlBgClass}`}
-            >
-              <div className="text-lg font-bold border-b border-black border-dashed p-1 flex w-full text-center items-center justify-center">
-                SQL:
-              </div>
-              <div className="text-base font-bold p-1">{sqlCount}</div>
-            </div>
-            <div
-              className={`flex flex-col justify-center items-center gap-1 border border-black border-dashed text-center w-20 ${noSqlBgClass}`}
-            >
-              <div className="text-lg font-bold border-b border-black border-dashed p-1 flex w-full text-center items-center justify-center">
-                NoSQL:
-              </div>
-              <div className="text-base font-bold p-1">{noSqlCount}</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

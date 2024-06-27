@@ -100,7 +100,7 @@ export function Delete() {
     <div className="flex flex-col justify-center items-center p-10">
       <div className="max-w-[800px]">
         <div className="font-bold text-3xl text-gray-700 text-center">
-          Comparação de Desempenho: SQL vs NoSQL
+          Performance Comparison: SQL vs NoSQL
         </div>
 
         <div className="mt-5">
@@ -124,7 +124,7 @@ export function Delete() {
                 }
                 className={`p-2 rounded ${index === 0 ? "ml-[46px]" : ""}`}
               >
-                <option value="">Selecione o Tipo de Filtro</option>
+                <option value="">Select Filter Type</option>
                 {getAvailableFilterOptions(index).map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -139,10 +139,10 @@ export function Delete() {
                   }
                   className="ml-2 p-2 rounded"
                 >
-                  <option value="">Operador</option>
-                  <option value=">">Maior que</option>
-                  <option value="<">Menor que</option>
-                  <option value="=">Igual a</option>
+                  <option value="">Operator</option>
+                  <option value=">">Bigger then</option>
+                  <option value="<">Less than</option>
+                  <option value="=">Equal to</option>
                 </select>
               )}
               <input
@@ -171,23 +171,23 @@ export function Delete() {
             disabled={isUploading}
             className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
           >
-            {isUploading ? "Carregando..." : "Deletar"}
+            {isUploading ? "Loading..." : "Search"}
           </button>
           <div className="mt-5">
-            <div>Tempo decorrido: {formatTime(elapsedTime)}</div>
+            <div>Elapsed time : {formatTime(elapsedTime)}</div>
           </div>
         </div>
         <div className="mt-5">
-          <h2 className="font-bold text-xl text-center">Resultados</h2>
+          <h2 className="font-bold text-xl text-center">Results</h2>
           <div className="flex flex-row w-full justify-between gap-4 mt-3">
             <div className="mt-3">
               <h3 className="font-semibold">SQL</h3>
-              <p>Tempo de resposta: {results?.sql?.responseTime} ms</p>
+              <p>Response time: {results?.sql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.sql?.data, null, 2)}</pre>
             </div>
             <div className="mt-3">
               <h3 className="font-semibold">NoSQL</h3>
-              <p>Tempo de resposta: {results?.noSql?.responseTime} ms</p>
+              <p>Response time: {results?.noSql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.noSql?.data, null, 2)}</pre>
             </div>
           </div>

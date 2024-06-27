@@ -5,6 +5,7 @@ import { DropdownMenu } from "../DropdownMenu";
 import { TbTopologyComplex } from "react-icons/tb";
 import { CgPlayListRemove } from "react-icons/cg";
 import { PiPathFill } from "react-icons/pi";
+import logo from "@/assets/images/Logo.png";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -23,7 +24,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="flex h-screen bg-theme-bg">
       <div className="flex-1 flex flex-col">
-        <div className="p-4 flex flex-row justify-center relative">
+        <div className="p-4 flex flex-row justify-center">
+          <div className="absolute left-0 xl:top-4 top-20">
+            <img src={logo} alt="" className="w-48"/>
+          </div>
           <ul className="flex flex-row text-white gap-2 text-xs lg:text-sm">
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -32,7 +36,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/post")}
             >
               <MdUploadFile size={20} className="hidden lg:flex" />
-              Envio de Dados
+              Data Submission
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -41,7 +45,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/get")}
             >
               <MdOutlineManageSearch size={20} className="hidden lg:flex" />
-              Busca por Informações
+              Search for Information
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -50,7 +54,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/update")}
             >
               <TbTopologyComplex size={20} className="hidden lg:flex" />
-              Atualizar Dados
+              Update data
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -59,7 +63,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/delete")}
             >
               <CgPlayListRemove size={20} className="hidden lg:flex" />
-              Excluir Informações
+              Delete Information
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -68,7 +72,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/which-one")}
             >
               <PiPathFill size={20} className="hidden lg:flex" />
-              Qual devo usar?
+              Which should I use?
             </li>
             <DropdownMenu />
           </ul>

@@ -12,12 +12,12 @@ interface DropdownMenuProps {}
 export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { signInByGoogle, user, isAuthenticated } = useContext(AuthContext);
+  const { signInByGoogle, user, isAuthenticated, signOut } = useContext(AuthContext);
 
   const handleLogout = () => {
-    const confirmDelete = window.confirm("tem certeza?");
+    const confirmDelete = window.confirm("Are you sure?");
     if (!confirmDelete) return;
-    console.log("Saiu");
+    signOut()
   };
 
   const googleLogin = useGoogleLogin({
@@ -26,7 +26,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
         const token = tokenResponse.access_token;
         await signInByGoogle(token);
       } catch (error) {
-        console.error("Erro ao fazer login com Google:", error);
+        console.error("Error when logging in with Google", error);
       }
     },
     onError: () => {
@@ -91,13 +91,13 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = () => {
               </div>
             </div>
           </div>
-          <div className="mt-4 flex flex-col items-center justify-center ">
+          <div className="mt-4 flex flex-col items-center justify-center px-2">
             <div className="text-sm">{user?.name}</div>
             <div className="text-xs">{user?.email}</div>
           </div>
           <div className="mt-4">
             <div
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-center items-center w-full text-sm font-bold"
               onClick={handleLogout}
             >
               <FaSignOutAlt className="mr-2" />

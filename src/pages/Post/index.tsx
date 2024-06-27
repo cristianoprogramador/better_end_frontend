@@ -52,15 +52,15 @@ export function Post() {
     <div className="flex flex-col justify-center items-center p-10">
       <div className="max-w-[800px]">
         <div className="font-bold text-3xl text-gray-700 text-center">
-          Comparação de Desempenho: SQL vs NoSQL
+          Performance Comparison: SQL vs NoSQL
         </div>
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950 cursor-pointer hover:bg-gray-300">
             <div className="flex flex-col justify-center items-center">
-              <div>Baixe o Arquivo</div>
+              <div>Download the File</div>
               <div className="text-xs text-justify w-3/4">
-                (O arquivo é fixo para evitar manipulação e erros, mas clique aqui para
-                baixar e ver o conteudo)
+                (The file is fixed to avoid manipulation and errors, but click
+                here to download and see the content )
               </div>
             </div>
             <div>
@@ -71,7 +71,7 @@ export function Post() {
             className="p-2 mt-5 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 text-white"
             onClick={startTimer}
           >
-            Clique para Carregar
+            Click to Load
           </div>
         </div>
         <div className="flex flex-row justify-center gap-10 w-full mt-6">
@@ -102,16 +102,16 @@ export function Post() {
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
           <div className="flex flex-col justify-center items-center">
             <div className="text-base">
-              Acima iremos testar a velocidade para o backend pegar o arquivo e
-              cadastrar nas devidas tabelas
+              Above we will test the speed for the backend to get the file and
+              register in the appropriate tables
             </div>
             <div className="text-base mt-10">
-              Ao clicar no botão para Carregar, primeiro iremos enviar a
-              planilha para o banco de dados SQL e assim que obtermos a resposta
-              de sucesso iremos parar o cronometro, logo em seguida iremos fazer
-              o mesmo para o banco de dados NoSQL
+              When you click the Upload button, we will first send the
+              spreadsheet to the SQL database and once we get the answer of
+              success we will stop the timer, then we will do same for NoSQL
+              database
             </div>
-            <div className="text-sm">(Os arquivos são os mesmos)</div>
+            <div className="text-sm">(The files are the same )</div>
           </div>
         </div>
       </div>
