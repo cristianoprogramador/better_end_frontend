@@ -1,51 +1,47 @@
-// src\pages\Home\index.tsx
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaDownload } from "react-icons/fa";
 
 export function Post() {
-  const [isUploading, setIsUploading] = useState(false);
-  const [startTime, setStartTime] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [loadPercentageSQL, setLoadPercentageSQL] = useState(0);
+  const [loadPercentageNoSQL, setLoadPercentageNoSQL] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const startTimer = () => {
-    setIsUploading(true);
-    setStartTime(Date.now());
-    setElapsedTime(0);
-  };
+  // Os tempos são agora em milissegundos, diretamente proporcionais a segundos completos
+  const averageTimePostgresql = 3220; // 3.220 segundos em milissegundos
+  const averageTimeMongoDB = 1976; // 1.976 segundos em milissegundos
 
-  useEffect(() => {
-    let interval: string | number | NodeJS.Timeout | undefined;
-    if (isUploading) {
-      interval = setInterval(() => {
-        setElapsedTime(Date.now() - startTime);
+  const formatTime = (time: number) =>
+    `${Math.floor(time / 1000)}s ${time % 1000}ms`;
+
+  const startLoadSimulation = () => {
+    if (!loading) {
+      setLoading(true);
+      setLoadPercentageSQL(0);
+      setLoadPercentageNoSQL(0);
+
+      const intervalSQL = setInterval(() => {
+        setLoadPercentageSQL((prev) => {
+          const nextPercentage = prev + (10 / averageTimePostgresql) * 100;
+          if (nextPercentage >= 100) {
+            clearInterval(intervalSQL);
+            return 100;
+          }
+          return nextPercentage;
+        });
       }, 10);
-    } else if (interval) {
-      clearInterval(interval);
+
+      const intervalNoSQL = setInterval(() => {
+        setLoadPercentageNoSQL((prev) => {
+          const nextPercentage = prev + (10 / averageTimeMongoDB) * 100;
+          if (nextPercentage >= 100) {
+            clearInterval(intervalNoSQL);
+            setLoading(false); // Libera o botão após terminar o carregamento de NoSQL
+            return 100;
+          }
+          return nextPercentage;
+        });
+      }, 10);
     }
-    return () => clearInterval(interval);
-  }, [isUploading, startTime]);
-
-  const stopTimer = () => {
-    setIsUploading(false);
-  };
-
-  useEffect(() => {
-    if (isUploading) {
-      setTimeout(() => {
-        stopTimer();
-      }, 5000);
-    }
-  }, [isUploading]);
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
-    const milliseconds = Math.floor((time % 1000) / 10);
-
-    return `${minutes}:${seconds.toString().padStart(2, "0")}:${milliseconds
-      .toString()
-      .padStart(2, "0")}`;
   };
 
   return (
@@ -55,63 +51,72 @@ export function Post() {
           Performance Comparison: SQL vs NoSQL
         </div>
         <div className="flex flex-col justify-center items-center">
-          <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950 cursor-pointer hover:bg-gray-300">
+          <a
+            href="/assets/files/orders_data.xlsx"
+            download
+            className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950 cursor-pointer hover:bg-gray-300"
+          >
             <div className="flex flex-col justify-center items-center">
               <div>Download the File</div>
               <div className="text-xs text-justify w-3/4">
-                (The file is fixed to avoid manipulation and errors, but click
-                here to download and see the content )
+                (Click here to download and see the content)
               </div>
             </div>
-            <div>
-              <FaDownload size={25} />
-            </div>
-          </div>
-          <div
-            className="p-2 mt-5 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-3 text-white"
-            onClick={startTimer}
+            <FaDownload size={25} />
+          </a>
+          <button
+            className={`p-2 mt-5 ${
+              loading ? "bg-gray-500" : "hover:bg-green-700 bg-green-500"
+            } rounded-lg cursor-pointer flex flex-row items-center gap-3 text-white`}
+            onClick={startLoadSimulation}
+            disabled={loading}
           >
-            Click to Load
-          </div>
+            {loading ? "Loading..." : "Click to Load"}
+          </button>
         </div>
         <div className="flex flex-row justify-center gap-10 w-full mt-6">
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700">SQL</div>
-
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"
-                style={{ width: `${(elapsedTime / 5000) * 100}%` }}
+                style={{ width: `${loadPercentageSQL}%` }}
               ></div>
             </div>
-            <div className="text-lg font-mono">{formatTime(elapsedTime)}</div>
+            <div className="text-lg font-mono">
+              {formatTime(averageTimePostgresql)}
+            </div>
           </div>
 
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700">NoSQL</div>
-
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"
-                style={{ width: `${(elapsedTime / 5000) * 100}%` }}
+                style={{ width: `${loadPercentageNoSQL}%` }}
               ></div>
             </div>
-            <div className="text-lg font-mono">{formatTime(elapsedTime)}</div>
+            <div className="text-lg font-mono">
+              {formatTime(averageTimeMongoDB)}
+            </div>
           </div>
         </div>
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
           <div className="flex flex-col justify-center items-center">
             <div className="text-base">
-              Above we will test the speed for the backend to get the file and
-              register in the appropriate tables
+              Above we will show the average speed for the backend to get the
+              file and register in the appropriate tables.
             </div>
-            <div className="text-base mt-10">
-              When you click the Upload button, we will first send the
-              spreadsheet to the SQL database and once we get the answer of
-              success we will stop the timer, then we will do same for NoSQL
-              database
+            <div className="text-base mt-5">
+              Below you will be able to understand the functions performed what
+              is being done in the backend, the file in question has 11.952
+              lines and 21 columns, only 1.612KB in size and you can test the
+              entire process by downloading the backend code and testing by
+              yourself.
             </div>
-            <div className="text-sm">(The files are the same )</div>
+            <div className="text-sm italic mt-2">
+              (you can get differents results depending on your machine)
+            </div>
           </div>
         </div>
       </div>

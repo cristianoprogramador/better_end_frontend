@@ -89,11 +89,23 @@ export function Get() {
     // Mocking search results with setTimeout
     setTimeout(() => {
       setResults({
-        sql: { responseTime: 1200, data: { message: "SQL Results" } },
-        noSql: { responseTime: 800, data: { message: "NoSQL Results" } },
+        sql: { responseTime: 193, data: { message: "SQL Results" } },
+        noSql: { responseTime: 1544, data: { message: "NoSQL Results" } },
       });
       stopTimer();
     }, 3000);
+  };
+
+  const handleDownload = (data: any, filename: string) => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -181,13 +193,39 @@ export function Get() {
               <h3 className="font-semibold">SQL</h3>
               <p>Response time: {results?.sql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.sql?.data, null, 2)}</pre>
+              <button
+                onClick={() =>
+                  handleDownload(results?.sql?.data, "sql_results.json")
+                }
+                className="mt-2 bg-green-500 text-white py-1 px-2 rounded"
+              >
+                Download JSON
+              </button>
             </div>
             <div className="mt-3">
               <h3 className="font-semibold">NoSQL</h3>
               <p>Response time: {results?.noSql?.responseTime} ms</p>
               <pre>{JSON.stringify(results?.noSql?.data, null, 2)}</pre>
+              <button
+                onClick={() =>
+                  handleDownload(results?.noSql?.data, "nosql_results.json")
+                }
+                className="mt-2 bg-green-500 text-white py-1 px-2 rounded"
+              >
+                Download JSON
+              </button>
             </div>
           </div>
+        </div>
+        <div className="mt-5 text-center">
+          <p>Total processing time for PostgreSQL: 0.193 s</p>
+          <p>Total processing time for MongoDB: 1.544 s</p>
+          <p>
+            PostgreSQL is generally faster for relational queries due to its
+            optimized query planner and execution engine. MongoDB, being a NoSQL
+            database, excels in scenarios involving large volumes of
+            unstructured data and provides flexibility in schema design.
+          </p>
         </div>
       </div>
     </div>
