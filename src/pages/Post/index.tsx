@@ -76,7 +76,10 @@ export function Post() {
         </div>
         <div className="flex flex-row justify-center gap-10 w-full mt-6">
           <div className="w-full flex flex-col justify-center items-center">
-            <div className="font-bold text-3xl text-gray-700">SQL</div>
+            <div className="font-bold text-3xl text-gray-700 text-center">
+              <div>(PostgreSQL)</div>
+              <div>SQL</div>
+            </div>
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"
@@ -89,7 +92,10 @@ export function Post() {
           </div>
 
           <div className="w-full flex flex-col justify-center items-center">
-            <div className="font-bold text-3xl text-gray-700">NoSQL</div>
+            <div className="font-bold text-3xl text-gray-700 text-center">
+              <div>(MongoDB)</div>
+              <div>NoSQL</div>
+            </div>
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
                 className="bg-green-600 h-2.5 rounded-full"

@@ -1,99 +1,67 @@
-import { useEffect, useState } from "react";
-import { IoAddCircleOutline, IoRemoveCircleOutline } from "react-icons/io5";
+import {
+  deleteMongoDBCode,
+  deletePostgreSQLCode,
+} from "@/utils/resultsJsonGET";
+import { useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
-interface Filter {
-  type: string;
-  value: string;
-  operator?: string;
-}
-
-const filterOptions = [
-  "Category",
-  "Tag",
-  "Product Name",
-  "Description",
-  "Price",
-];
+const customStyle = {
+  ...solarizedlight,
+  'code[class*="language-"]': {
+    ...solarizedlight['code[class*="language-"]'],
+    background: "none",
+    fontSize: "0.9em", // Ajuste o tamanho da fonte conforme necessário
+  },
+  'pre[class*="language-"]': {
+    ...solarizedlight['pre[class*="language-"]'],
+    background: "none",
+    padding: "0",
+    margin: "0",
+    fontSize: "0.9em", // Ajuste o tamanho da fonte conforme necessário
+  },
+};
 
 export function Delete() {
-  const [isUploading, setIsUploading] = useState(false);
-  const [startTime, setStartTime] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const [filters, setFilters] = useState<Filter[]>([{ type: "", value: "" }]);
-  const [results, setResults] = useState<any>(null);
+  const [loadPercentageSQL, setLoadPercentageSQL] = useState(0);
+  const [loadPercentageNoSQL, setLoadPercentageNoSQL] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  const startTimer = () => {
-    setIsUploading(true);
-    setStartTime(Date.now());
-    setElapsedTime(0);
-  };
+  const averageTimePostgresql = 742; // 0.025 segundos em milissegundos
+  const averageTimeMongoDB = 44; // 0.054 segundos em milissegundos
 
-  useEffect(() => {
-    let interval: string | number | NodeJS.Timeout | undefined;
-    if (isUploading) {
-      interval = setInterval(() => {
-        setElapsedTime(Date.now() - startTime);
+  const formatTime = (time: number) =>
+    `${Math.floor(time / 1000)}s ${time % 1000}ms`;
+
+  const startLoadSimulation = () => {
+    if (!loading) {
+      setLoading(true);
+      setLoadPercentageSQL(0);
+      setLoadPercentageNoSQL(0);
+
+      const intervalSQL = setInterval(() => {
+        setLoadPercentageSQL((prev) => {
+          const nextPercentage = prev + (10 / averageTimePostgresql) * 100;
+          if (nextPercentage >= 100) {
+            clearInterval(intervalSQL);
+            return 100;
+          }
+          return nextPercentage;
+        });
       }, 10);
-    } else if (interval) {
-      clearInterval(interval);
+
+      const intervalNoSQL = setInterval(() => {
+        setLoadPercentageNoSQL((prev) => {
+          const nextPercentage = prev + (10 / averageTimeMongoDB) * 100;
+          if (nextPercentage >= 100) {
+            clearInterval(intervalNoSQL);
+            setLoading(false); // Libera o botão após terminar o carregamento de NoSQL
+            return 100;
+          }
+          return nextPercentage;
+        });
+      }, 10);
     }
-    return () => clearInterval(interval);
-  }, [isUploading, startTime]);
-
-  const stopTimer = () => {
-    setIsUploading(false);
-  };
-
-  useEffect(() => {
-    if (isUploading) {
-      setTimeout(() => {
-        stopTimer();
-      }, 5000);
-    }
-  }, [isUploading]);
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
-    const milliseconds = Math.floor((time % 1000) / 10);
-
-    return `${minutes}:${seconds.toString().padStart(2, "0")}:${milliseconds
-      .toString()
-      .padStart(2, "0")}`;
-  };
-
-  const handleFilterChange = (index: number, field: string, value: string) => {
-    const newFilters = [...filters];
-    newFilters[index] = { ...newFilters[index], [field]: value };
-    setFilters(newFilters);
-  };
-
-  const getAvailableFilterOptions = (currentIndex: number) => {
-    const selectedOptions = filters
-      .map((filter, idx) => idx !== currentIndex && filter.type)
-      .filter(Boolean);
-    return filterOptions.filter((option) => !selectedOptions.includes(option));
-  };
-
-  const addFilter = () => {
-    setFilters([...filters, { type: "", value: "" }]);
-  };
-
-  const removeFilter = (index: number) => {
-    const newFilters = filters.filter((_, idx) => idx !== index);
-    setFilters(newFilters);
-  };
-
-  const handleSearch = async () => {
-    startTimer();
-    // Mocking search results with setTimeout
-    setTimeout(() => {
-      setResults({
-        sql: { responseTime: 1200, data: { message: "SQL Results" } },
-        noSql: { responseTime: 800, data: { message: "NoSQL Results" } },
-      });
-      stopTimer();
-    }, 3000);
   };
 
   return (
@@ -102,94 +70,104 @@ export function Delete() {
         <div className="font-bold text-3xl text-gray-700 text-center">
           Performance Comparison: SQL vs NoSQL
         </div>
-
-        <div className="mt-5">
-          <h2 className="font-bold text-2xl text-gray-700 text-center">
-            Delete
-          </h2>
-          {filters.map((filter, index) => (
-            <div key={index} className="mb-3 flex items-center mt-5">
-              {index > 0 && (
-                <button
-                  onClick={() => removeFilter(index)}
-                  className="mr-2 p-1 rounded hover:opacity-60"
-                >
-                  <IoRemoveCircleOutline size={30} color="red" />
-                </button>
-              )}
-              <select
-                value={filter.type || ""}
-                onChange={(e) =>
-                  handleFilterChange(index, "type", e.target.value)
-                }
-                className={`p-2 rounded ${index === 0 ? "ml-[46px]" : ""}`}
-              >
-                <option value="">Select Filter Type</option>
-                {getAvailableFilterOptions(index).map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-              {filter.type === "Price" && (
-                <select
-                  value={filter.operator || ""}
-                  onChange={(e) =>
-                    handleFilterChange(index, "operator", e.target.value)
-                  }
-                  className="ml-2 p-2 rounded"
-                >
-                  <option value="">Operator</option>
-                  <option value=">">Bigger then</option>
-                  <option value="<">Less than</option>
-                  <option value="=">Equal to</option>
-                </select>
-              )}
-              <input
-                type="text"
-                value={filter.value || ""}
-                onChange={(e) =>
-                  handleFilterChange(index, "value", e.target.value)
-                }
-                className="ml-2 p-2 rounded"
-              />
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
+            <div className="flex flex-col justify-center items-center">
+              <div className="text-base">
+                The delete operation removes old orders and their related items
+                from the database. This demonstrates the performance of MongoDB
+                and PostgreSQL when performing complex deletions involving
+                multiple collections/tables.
+              </div>
             </div>
-          ))}
-          <div className="mt-2 p-1 rounded w-full flex justify-center items-center">
-            <IoAddCircleOutline
-              size={30}
-              color="green"
-              onClick={addFilter}
-              className="hover:opacity-60 cursor-pointer"
-            />
           </div>
-        </div>
-
-        <div className="flex flex-row gap-5 items-center justify-center">
           <button
-            onClick={handleSearch}
-            disabled={isUploading}
-            className="mt-5 bg-blue-500 text-white py-2 px-4 rounded"
+            className={`p-2 mt-5 ${
+              loading ? "bg-gray-500" : "hover:bg-green-700 bg-green-500"
+            } rounded-lg cursor-pointer flex flex-row items-center gap-3 text-white`}
+            onClick={startLoadSimulation}
+            disabled={loading}
           >
-            {isUploading ? "Loading..." : "Search"}
+            {loading ? "Loading..." : "Click to Delete"}
           </button>
-          <div className="mt-5">
-            <div>Elapsed time : {formatTime(elapsedTime)}</div>
+        </div>
+        <div className="flex flex-row justify-center gap-10 w-full mt-6">
+          <div className="w-full flex flex-col justify-center items-center">
+            <div className="font-bold text-3xl text-gray-700 text-center">
+              <div>(PostgreSQL)</div>
+              <div>SQL</div>
+            </div>
+            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
+              <div
+                className="bg-green-600 h-2.5 rounded-full"
+                style={{ width: `${loadPercentageSQL}%` }}
+              ></div>
+            </div>
+            <div className="text-lg font-mono">
+              {formatTime(averageTimePostgresql)}
+            </div>
+          </div>
+
+          <div className="w-full flex flex-col justify-center items-center">
+            <div className="font-bold text-3xl text-gray-700 text-center">
+              <div>(MongoDB)</div>
+              <div>NoSQL</div>
+            </div>
+            <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
+              <div
+                className="bg-green-600 h-2.5 rounded-full"
+                style={{ width: `${loadPercentageNoSQL}%` }}
+              ></div>
+            </div>
+            <div className="text-lg font-mono">
+              {formatTime(averageTimeMongoDB)}
+            </div>
           </div>
         </div>
-        <div className="mt-5">
-          <h2 className="font-bold text-xl text-center">Results</h2>
-          <div className="flex flex-row w-full justify-between gap-4 mt-3">
-            <div className="mt-3">
-              <h3 className="font-semibold">SQL</h3>
-              <p>Response time: {results?.sql?.responseTime} ms</p>
-              <pre>{JSON.stringify(results?.sql?.data, null, 2)}</pre>
+        <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-base">
+              PostgreSQL is generally faster for relational queries due to its
+              optimized query planner and execution engine. MongoDB, being a
+              NoSQL database, excels in scenarios involving large volumes of
+              unstructured data and provides flexibility in schema design.
             </div>
-            <div className="mt-3">
-              <h3 className="font-semibold">NoSQL</h3>
-              <p>Response time: {results?.noSql?.responseTime} ms</p>
-              <pre>{JSON.stringify(results?.noSql?.data, null, 2)}</pre>
+            <div className="text-sm italic mt-2">
+              (the JSON result is the same for both databases)
             </div>
+          </div>
+        </div>
+        <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
+          <div className="flex flex-col justify-center items-center">
+            <div className="text-sm italic mt-2">
+              For PostgreSQL, the delete operation uses efficient SQL queries to
+              remove old orders and their related items. The optimized query
+              planner ensures quick execution of complex deletions across multiple tables.
+            </div>
+            <div className="text-sm italic mt-2">
+              For MongoDB, the delete operation leverages the aggregation
+              framework and delete operations to remove old orders and their related items. While MongoDB handles
+              unstructured data flexibly, it may take longer for complex deletions compared to traditional SQL databases.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row rounded mt-5 justify-center items-start p-4 border-dashed border border-cyan-950">
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-base">MongoDB Delete Function:</div>
+          <div className="text-sm italic mt-2">
+            <SyntaxHighlighter language="javascript" style={customStyle}>
+              {deleteMongoDBCode}
+            </SyntaxHighlighter>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-base">PostgreSQL Delete Function:</div>
+          <div className="text-sm italic mt-2">
+            <SyntaxHighlighter language="javascript" style={customStyle}>
+              {deletePostgreSQLCode}
+            </SyntaxHighlighter>
           </div>
         </div>
       </div>

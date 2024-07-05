@@ -29,3 +29,233 @@ export const resultsGEt = {
     },
   ],
 };
+
+export const updatePostgreSQLCode = `
+async updatePostgreSQL(): Promise<void> {
+  // Update order status
+  await this.prismaPostgresql.order.updateMany({
+    where: {
+      status: "Pending",
+      orderDate: {
+        gte: new Date("2023-06-01"),
+        lte: new Date("2024-07-31"),
+      },
+      totalOrderValue: {
+        gte: 100,
+      },
+    },
+    data: {
+      status: "Updated",
+      updatedAt: new Date(),
+    },
+  });
+
+  // Find related customers
+  const affectedOrders = await this.prismaPostgresql.order.findMany({
+    where: {
+      status: "Updated",
+      orderDate: {
+        gte: new Date("2023-06-01"),
+        lte: new Date("2024-07-31"),
+      },
+      totalOrderValue: {
+        gte: 100,
+      },
+    },
+    select: {
+      id: true,
+      customerId: true,
+    },
+  });
+
+
+
+  const customerIds = affectedOrders.map((order) => order.customerId);
+  const orderIds = affectedOrders.map((order) => order.id);
+
+  await this.prismaPostgresql.orderItem.updateMany({
+    where: {
+      orderId: {
+        in: orderIds,
+      },
+    },
+    data: {
+      quantity: {
+        increment: 1,
+      },
+    },
+  });
+
+  // Update the address of related customers
+  await this.prismaPostgresql.customer.updateMany({
+    where: {
+      id: {
+        in: customerIds,
+      },
+    },
+    data: {
+      address: "123 Updated St",
+      city: "Updated City",
+      state: "Updated State",
+      zipCode: "00000",
+    },
+  });
+}`;
+
+export const updateMongoDBCode = `
+async updateMongoDB(): Promise<void> {
+  // Update order status
+  await this.db.collection("Order").updateMany(
+    {
+      status: "Pending",
+      orderDate: {
+        $gte: new Date("2023-06-01"),
+        $lte: new Date("2024-07-31"),
+      },
+      totalOrderValue: {
+        $gte: 100,
+      },
+    },
+    {
+      $set: {
+        status: "Updated",
+        updatedAt: new Date(),
+      },
+    }
+  );
+
+  // Find affected customers
+  const affectedOrders = await this.db
+    .collection("Order")
+    .find(
+      {
+        status: "Updated",
+        orderDate: {
+          $gte: new Date("2023-06-01"),
+          $lte: new Date("2024-07-31"),
+        },
+        totalOrderValue: {
+          $gte: 100,
+        },
+      },
+      { projection: { id: 1, customerId: 1 } }
+    )
+    .toArray();
+
+  const customerIds = affectedOrders.map((order) => order.customerId);
+  const orderIds = affectedOrders.map((order) => order.id);
+
+  await this.db.collection("OrderItem").updateMany(
+    {
+      orderId: {
+        $in: orderIds,
+      },
+    },
+    {
+      $inc: {
+        quantity: 1,
+      },
+    }
+  );
+
+  // Update the address of related customers
+  await this.db.collection("Customer").updateMany(
+    {
+      id: {
+        $in: customerIds,
+      },
+    },
+    {
+      $set: {
+        address: "123 Updated St",
+        city: "Updated City",
+        state: "Updated State",
+        zipCode: "00000",
+      },
+    }
+  );
+}`;
+
+export const deleteMongoDBCode = `
+async deleteMongoDB(): Promise<{
+    totalDeletedOrders: number;
+    totalOrderValueDeleted: number;
+  }> {
+
+  const oldOrders = await this.db.collection("Order")
+  .find(
+    {
+      orderDate: {
+        $lte: new Date("2022-12-31"),
+      },
+    },
+    { projection: {
+     _id: 1,
+     totalOrderValue: 1
+    } }
+  ).toArray();
+
+  const orderIds = oldOrders.map((order) => order._id);
+
+  const totalOrderValue = oldOrders.reduce(
+    (sum, order) => sum + order.totalOrderValue,
+    0
+  );
+
+  await this.db.collection("OrderItem").deleteMany({
+    orderId: { $in: orderIds },
+  });
+
+  await this.db.collection("Order").deleteMany({
+    _id: { $in: orderIds },
+  });
+
+  return {
+    totalDeletedOrders: orderIds.length,
+    totalOrderValueDeleted: totalOrderValue,
+  };
+}
+`;
+
+export const deletePostgreSQLCode = `
+async deletePostgreSQL(): Promise<{
+    totalDeletedOrders: number;
+    totalOrderValueDeleted: number;
+  }> {
+
+  const oldOrders = await this.prismaPostgresql.order
+  .findMany({
+    where: {
+      orderDate: {
+        lte: new Date("2022-12-31"),
+      },
+    },
+    select: {
+      id: true,
+      totalOrderValue: true,
+    },
+  });
+
+  const orderIds = oldOrders.map((order) => order.id);
+
+  const totalOrderValue = oldOrders.reduce(
+    (sum, order) => sum + order.totalOrderValue,
+    0
+  );
+
+  await this.prismaPostgresql.orderItem.deleteMany({
+    where: {
+      orderId: { in: orderIds },
+    },
+  });
+
+  await this.prismaPostgresql.order.deleteMany({
+    where: { id: { in: orderIds } },
+  });
+
+  return {
+    totalDeletedOrders: orderIds.length,
+    totalOrderValueDeleted: totalOrderValue,
+  };
+}
+`;
