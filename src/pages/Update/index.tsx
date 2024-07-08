@@ -133,9 +133,6 @@ export function Update() {
               NoSQL database, excels in scenarios involving large volumes of
               unstructured data and provides flexibility in schema design.
             </div>
-            <div className="text-sm italic mt-2">
-              (the JSON result is the same for both databases)
-            </div>
           </div>
         </div>
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
@@ -158,19 +155,21 @@ export function Update() {
       </div>
 
       <div className="flex flex-col lg:flex-row rounded mt-5 justify-center items-start p-4 border-dashed border border-cyan-950">
-        <div className="flex flex-col justify-center items-center">
-          <div className="text-base">MongoDB Update Function:</div>
-          <div className="text-sm italic mt-2">
-            <SyntaxHighlighter language="javascript" style={customStyle}>
-              {updateMongoDBCode}
-            </SyntaxHighlighter>
-          </div>
-        </div>
+
         <div className="flex flex-col justify-center items-center">
           <div className="text-base">PostgreSQL Update Function:</div>
           <div className="text-sm italic mt-2">
             <SyntaxHighlighter language="javascript" style={customStyle}>
               {updatePostgreSQLCode}
+            </SyntaxHighlighter>
+          </div>
+        </div>
+
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-base">MongoDB Update Function:</div>
+          <div className="text-sm italic mt-2">
+            <SyntaxHighlighter language="javascript" style={customStyle}>
+              {updateMongoDBCode}
             </SyntaxHighlighter>
           </div>
         </div>

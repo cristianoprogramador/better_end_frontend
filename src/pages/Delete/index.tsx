@@ -11,14 +11,14 @@ const customStyle = {
   'code[class*="language-"]': {
     ...solarizedlight['code[class*="language-"]'],
     background: "none",
-    fontSize: "0.9em", // Ajuste o tamanho da fonte conforme necessário
+    fontSize: "0.9em",
   },
   'pre[class*="language-"]': {
     ...solarizedlight['pre[class*="language-"]'],
     background: "none",
     padding: "0",
     margin: "0",
-    fontSize: "0.9em", // Ajuste o tamanho da fonte conforme necessário
+    fontSize: "0.9em",
   },
 };
 
@@ -27,8 +27,8 @@ export function Delete() {
   const [loadPercentageNoSQL, setLoadPercentageNoSQL] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const averageTimePostgresql = 742; // 0.025 segundos em milissegundos
-  const averageTimeMongoDB = 44; // 0.054 segundos em milissegundos
+  const averageTimePostgresql = 742;
+  const averageTimeMongoDB = 44;
 
   const formatTime = (time: number) =>
     `${Math.floor(time / 1000)}s ${time % 1000}ms`;
@@ -132,9 +132,6 @@ export function Delete() {
               NoSQL database, excels in scenarios involving large volumes of
               unstructured data and provides flexibility in schema design.
             </div>
-            <div className="text-sm italic mt-2">
-              (the JSON result is the same for both databases)
-            </div>
           </div>
         </div>
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
@@ -142,12 +139,15 @@ export function Delete() {
             <div className="text-sm italic mt-2">
               For PostgreSQL, the delete operation uses efficient SQL queries to
               remove old orders and their related items. The optimized query
-              planner ensures quick execution of complex deletions across multiple tables.
+              planner ensures quick execution of complex deletions across
+              multiple tables.
             </div>
             <div className="text-sm italic mt-2">
               For MongoDB, the delete operation leverages the aggregation
-              framework and delete operations to remove old orders and their related items. While MongoDB handles
-              unstructured data flexibly, it may take longer for complex deletions compared to traditional SQL databases.
+              framework and delete operations to remove old orders and their
+              related items. While MongoDB handles unstructured data flexibly,
+              it may take longer for complex deletions compared to traditional
+              SQL databases.
             </div>
           </div>
         </div>
@@ -155,18 +155,18 @@ export function Delete() {
 
       <div className="flex flex-col lg:flex-row rounded mt-5 justify-center items-start p-4 border-dashed border border-cyan-950">
         <div className="flex flex-col justify-center items-center">
-          <div className="text-base">MongoDB Delete Function:</div>
-          <div className="text-sm italic mt-2">
-            <SyntaxHighlighter language="javascript" style={customStyle}>
-              {deleteMongoDBCode}
-            </SyntaxHighlighter>
-          </div>
-        </div>
-        <div className="flex flex-col justify-center items-center">
           <div className="text-base">PostgreSQL Delete Function:</div>
           <div className="text-sm italic mt-2">
             <SyntaxHighlighter language="javascript" style={customStyle}>
               {deletePostgreSQLCode}
+            </SyntaxHighlighter>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-base">MongoDB Delete Function:</div>
+          <div className="text-sm italic mt-2">
+            <SyntaxHighlighter language="javascript" style={customStyle}>
+              {deleteMongoDBCode}
             </SyntaxHighlighter>
           </div>
         </div>

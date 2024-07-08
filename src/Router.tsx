@@ -12,6 +12,7 @@ import { Post } from "./pages/Post";
 import { Update } from "./pages/Update";
 import { Delete } from "./pages/Delete";
 import { WhichOne } from "./pages/WhichOne";
+import { Home } from "./pages/Home";
 
 function RouteWithLayout() {
   return (
@@ -27,6 +28,7 @@ export function ProjectRoutes() {
       <Router>
         <Routes>
           <Route element={<RouteWithLayout />}>
+            <Route path="/" element={<Home />} />
             <Route path="/post" element={<Post />} />
             <Route path="/get" element={<Get />} />
             <Route path="/update" element={<Update />} />

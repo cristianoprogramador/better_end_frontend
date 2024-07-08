@@ -5,6 +5,9 @@ import { TbTopologyComplex } from "react-icons/tb";
 import { CgPlayListRemove } from "react-icons/cg";
 import { PiPathFill } from "react-icons/pi";
 import logo from "@/assets/images/Logo.png";
+import { FaLinkedin } from "react-icons/fa6";
+import { IoLogoYoutube } from "react-icons/io5";
+import { FaHome } from "react-icons/fa";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -22,7 +25,10 @@ const DatabaseWall: React.FC<{ size: number }> = ({ size }) => {
   const numberOfBricks = Math.ceil(size / sizePerBrick);
 
   return (
-    <div className="flex flex-wrap gap-1" style={{ width: brickWidth * bricksPerRow }}>
+    <div
+      className="flex flex-wrap gap-1"
+      style={{ width: brickWidth * bricksPerRow }}
+    >
       {Array.from({ length: numberOfBricks }).map((_, index) => (
         <div
           key={index}
@@ -44,7 +50,12 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <div className="flex-1 flex flex-col">
         <div className="p-4 flex flex-row justify-center">
           <div className="absolute left-0 xl:top-4 top-20 hidden md:flex">
-            <img src={logo} alt="" className="w-48" />
+            <img
+              src={logo}
+              alt=""
+              className="w-48 cursor-pointer"
+              onClick={() => navigate("/")}
+            />
           </div>
           <ul className="flex flex-row text-white gap-2 text-xs lg:text-sm">
             <li
@@ -94,7 +105,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             </li>
           </ul>
         </div>
-        <div className="w-full flex flex-col justify-center items-center gap-4">
+        <div className="w-full flex flex-col mb-4 justify-center items-center gap-4">
           <div className="flex flex-row justify-center items-center gap-10">
             <div>
               <div>SQL : {mockDatabaseSize.sqlSize / 1000} megabytes</div>
@@ -107,6 +118,32 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </div>
         </div>
         <main className="flex-1 overflow-y-auto">{children}</main>
+
+        <footer className="w-full p-4 bg-white shadow text-center text-sm relative">
+          <div className="absolute right-10 bottom-1 flex flex-row gap-4">
+            <a
+              href="https://www.linkedin.com/in/cristiano-pereira-da-silva-bb991a124/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaLinkedin size={20} className="hover:opacity-80"/>
+            </a>
+            <a
+              href="https://cristianosilvadev.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaHome size={20} className="hover:opacity-80"/>
+            </a>
+            <a
+              href="https://www.youtube.com/channel/UCsxEJaQnDvadd2TIBmc58Aw"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <IoLogoYoutube size={20} className="hover:opacity-80"/>
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );
