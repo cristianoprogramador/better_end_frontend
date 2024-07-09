@@ -50,8 +50,12 @@ async updatePostgreSQL(): Promise<void> {
     },
   });
 
+
+
   // Find related customers
-  const affectedOrders = await this.prismaPostgresql.order.findMany({
+  const affectedOrders = await this.prismaPostgresql
+  .order
+  .findMany({
     where: {
       status: "Updated",
       orderDate: {
@@ -67,8 +71,6 @@ async updatePostgreSQL(): Promise<void> {
       customerId: true,
     },
   });
-
-
 
   const customerIds = affectedOrders.map((order) => order.customerId);
   const orderIds = affectedOrders.map((order) => order.id);
@@ -142,6 +144,8 @@ async updateMongoDB(): Promise<void> {
     )
     .toArray();
 
+
+
   const customerIds = affectedOrders.map((order) => order.customerId);
   const orderIds = affectedOrders.map((order) => order.id);
 
@@ -205,6 +209,8 @@ async deleteMongoDB(): Promise<{
   await this.db.collection("OrderItem").deleteMany({
     orderId: { $in: orderIds },
   });
+
+
 
   await this.db.collection("Order").deleteMany({
     _id: { $in: orderIds },

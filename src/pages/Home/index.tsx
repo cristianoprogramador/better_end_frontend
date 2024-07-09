@@ -8,7 +8,7 @@ export function Home() {
 
   return (
     <div className="flex flex-col items-center p-10 min-h-screen">
-      <section className="flex flex-col items-center text-center mt-10">
+      <section className="flex flex-col items-center text-center">
         <h1 className="text-4xl font-bold text-gray-800">
           {t("home.welcome")}
         </h1>
