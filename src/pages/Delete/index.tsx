@@ -3,6 +3,7 @@ import {
   deletePostgreSQLCode,
 } from "@/utils/resultsJsonGET";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -26,6 +27,7 @@ export function Delete() {
   const [loadPercentageSQL, setLoadPercentageSQL] = useState(0);
   const [loadPercentageNoSQL, setLoadPercentageNoSQL] = useState(0);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const averageTimePostgresql = 742;
   const averageTimeMongoDB = 44;
@@ -55,7 +57,7 @@ export function Delete() {
           const nextPercentage = prev + (10 / averageTimeMongoDB) * 100;
           if (nextPercentage >= 100) {
             clearInterval(intervalNoSQL);
-            setLoading(false); // Libera o botão após terminar o carregamento de NoSQL
+            setLoading(false);
             return 100;
           }
           return nextPercentage;
@@ -68,17 +70,12 @@ export function Delete() {
     <div className="flex flex-col justify-center items-center p-10">
       <div className="max-w-[800px]">
         <div className="font-bold text-3xl text-gray-700 text-center">
-          Performance Comparison: SQL vs NoSQL
+          {t("delete.performance")}
         </div>
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
             <div className="flex flex-col justify-center items-center">
-              <div className="text-base">
-                The delete operation removes old orders and their related items
-                from the database. This demonstrates the performance of MongoDB
-                and PostgreSQL when performing complex deletions involving
-                multiple collections/tables.
-              </div>
+              <div className="text-base">{t("delete.delete_description")}</div>
             </div>
           </div>
           <button
@@ -88,14 +85,14 @@ export function Delete() {
             onClick={startLoadSimulation}
             disabled={loading}
           >
-            {loading ? "Loading..." : "Click to Delete"}
+            {loading ? t("delete.loading") : t("delete.click_to_delete")}
           </button>
         </div>
         <div className="flex flex-row justify-center gap-10 w-full mt-6">
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700 text-center">
-              <div>(PostgreSQL)</div>
-              <div>SQL</div>
+              <div>{t("delete.postgresql")}</div>
+              <div>{t("delete.sql")}</div>
             </div>
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
@@ -110,8 +107,8 @@ export function Delete() {
 
           <div className="w-full flex flex-col justify-center items-center">
             <div className="font-bold text-3xl text-gray-700 text-center">
-              <div>(MongoDB)</div>
-              <div>NoSQL</div>
+              <div>{t("delete.mongodb")}</div>
+              <div>{t("delete.nosql")}</div>
             </div>
             <div className="w-full mt-4 bg-gray-200 rounded-full h-2.5 mb-4 border border-green-800">
               <div
@@ -126,28 +123,16 @@ export function Delete() {
         </div>
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
           <div className="flex flex-col justify-center items-center">
-            <div className="text-base">
-              PostgreSQL is generally faster for relational queries due to its
-              optimized query planner and execution engine. MongoDB, being a
-              NoSQL database, excels in scenarios involving large volumes of
-              unstructured data and provides flexibility in schema design.
-            </div>
+            <div className="text-base">{t("delete.sql_performance")}</div>
           </div>
         </div>
         <div className="flex flex-row gap-4 rounded mt-5 justify-center items-center p-4 border-dashed border border-cyan-950">
           <div className="flex flex-col justify-center items-center">
             <div className="text-sm italic mt-2">
-              For PostgreSQL, the delete operation uses efficient SQL queries to
-              remove old orders and their related items. The optimized query
-              planner ensures quick execution of complex deletions across
-              multiple tables.
+              {t("delete.sql_delete_explanation")}
             </div>
             <div className="text-sm italic mt-2">
-              For MongoDB, the delete operation leverages the aggregation
-              framework and delete operations to remove old orders and their
-              related items. While MongoDB handles unstructured data flexibly,
-              it may take longer for complex deletions compared to traditional
-              SQL databases.
+              {t("delete.mongodb_delete_explanation")}
             </div>
           </div>
         </div>
@@ -155,7 +140,7 @@ export function Delete() {
 
       <div className="flex flex-col lg:flex-row rounded mt-5 justify-center items-start p-4 border-dashed border border-cyan-950">
         <div className="flex flex-col justify-center items-center">
-          <div className="text-base">PostgreSQL Delete Function:</div>
+          <div className="text-base">{t("delete.postgresql_function")}</div>
           <div className="text-sm italic mt-2">
             <SyntaxHighlighter language="javascript" style={customStyle}>
               {deletePostgreSQLCode}
@@ -163,7 +148,7 @@ export function Delete() {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <div className="text-base">MongoDB Delete Function:</div>
+          <div className="text-base">{t("delete.mongodb_function")}</div>
           <div className="text-sm italic mt-2">
             <SyntaxHighlighter language="javascript" style={customStyle}>
               {deleteMongoDBCode}

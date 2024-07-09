@@ -8,14 +8,18 @@ import logo from "@/assets/images/Logo.png";
 import { FaLinkedin } from "react-icons/fa6";
 import { IoLogoYoutube } from "react-icons/io5";
 import { FaHome } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
+import flagBrazil from "@/assets/images/flagbrazil.svg";
+import flagEUA from "@/assets/images/flagEUA.svg";
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 const mockDatabaseSize = {
-  sqlSize: 7180, // 5 MB em kilobytes
-  nosqlSize: 5270, // 4 MB em kilobytes
+  sqlSize: 7180,
+  nosqlSize: 5270,
 };
 
 const DatabaseWall: React.FC<{ size: number }> = ({ size }) => {
@@ -42,13 +46,15 @@ const DatabaseWall: React.FC<{ size: number }> = ({ size }) => {
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { language, changeLanguage } = useLanguage();
 
   const isActive = (pathname: string) => location.pathname === pathname;
 
   return (
     <div className="flex h-screen bg-theme-bg">
       <div className="flex-1 flex flex-col">
-        <div className="p-4 flex flex-row justify-center">
+        <div className="p-4 flex flex-row justify-center relative">
           <div className="absolute left-0 xl:top-4 top-20 hidden md:flex">
             <img
               src={logo}
@@ -65,7 +71,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/post")}
             >
               <MdUploadFile size={20} className="hidden lg:flex" />
-              Data Submission
+              {t("main_layout.post")}
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -74,7 +80,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/get")}
             >
               <MdOutlineManageSearch size={20} className="hidden lg:flex" />
-              Search for Information
+              {t("main_layout.get")}
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -83,7 +89,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/update")}
             >
               <TbTopologyComplex size={20} className="hidden lg:flex" />
-              Update data
+              {t("main_layout.update")}
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -92,7 +98,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/delete")}
             >
               <CgPlayListRemove size={20} className="hidden lg:flex" />
-              Delete Information
+              {t("main_layout.delete")}
             </li>
             <li
               className={`px-4 py-2 hover:bg-green-700 bg-green-500 rounded-lg cursor-pointer flex flex-row items-center gap-2 ${
@@ -101,9 +107,27 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               onClick={() => navigate("/which-one")}
             >
               <PiPathFill size={20} className="hidden lg:flex" />
-              Which should I use?
+              {t("main_layout.which_one")}
             </li>
           </ul>
+          <div className="flex flex-row absolute right-3 md:top-5 top-[70px]">
+            <img
+              src={flagBrazil}
+              alt="PT"
+              className={`w-[30px] h-[20px] cursor-pointer ${
+                language === "pt" ? "border rounded border-blue-500" : ""
+              }`}
+              onClick={() => changeLanguage("pt")}
+            />
+            <img
+              src={flagEUA}
+              alt="EN"
+              className={`w-[30px] h-[20px] cursor-pointer ${
+                language === "en" ? "border rounded border-blue-500" : ""
+              }`}
+              onClick={() => changeLanguage("en")}
+            />
+          </div>
         </div>
         <div className="w-full flex flex-col mb-4 justify-center items-center gap-4">
           <div className="flex flex-row justify-center items-center gap-10">
@@ -126,21 +150,21 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
               target="_blank"
               rel="noreferrer"
             >
-              <FaLinkedin size={20} className="hover:opacity-80"/>
+              <FaLinkedin size={20} className="hover:opacity-80" />
             </a>
             <a
               href="https://cristianosilvadev.com/"
               target="_blank"
               rel="noreferrer"
             >
-              <FaHome size={20} className="hover:opacity-80"/>
+              <FaHome size={20} className="hover:opacity-80" />
             </a>
             <a
               href="https://www.youtube.com/channel/UCsxEJaQnDvadd2TIBmc58Aw"
               target="_blank"
               rel="noreferrer"
             >
-              <IoLogoYoutube size={20} className="hover:opacity-80"/>
+              <IoLogoYoutube size={20} className="hover:opacity-80" />
             </a>
           </div>
         </footer>

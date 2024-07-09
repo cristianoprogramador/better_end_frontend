@@ -1,4 +1,4 @@
-export const questions = [
+export const questions_pt = [
   {
     id: 1,
     question: "Os seus dados possuem uma estrutura fixa e bem definida?",
